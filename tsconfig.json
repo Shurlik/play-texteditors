@@ -21,8 +21,9 @@
     "paths": {
       "@/*": ["./src/*"],
       "@/constants": ["./src/constants/*"],
+      "@/themeStorage": ["./src/constants/theme/*"],
       "@/interfaces": ["./src/interfaces/*"],
-      "@/utils": ["./src/utils/*"],
+      "@/utils": ["./src/utils/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
