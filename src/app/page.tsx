@@ -1,8 +1,8 @@
 import { NextPage } from "next";
 
-const HomePage: NextPage = () => {
-  return <>
-  </>;
+const MainPage: NextPage = () => {
+  return <div style={{ color: "#FFF" }}>Main page</div>;
 };
 
-export default HomePage;
+
+export default MainPage;
