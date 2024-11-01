@@ -27,9 +27,9 @@ const ToggleEdit: React.FC<ToggleEditProps> = ({ onClick, isEdit, loading }) => 
         cursor: 'pointer',
         transition: '.3s',
         padding: '.2rem .5rem',
-        color: isEdit ? colors.mainGreen : colors.orange,
+        color: isEdit ? getColor("mainGreen") : getColor("orange"),
         '&:hover': {
-          color: !isEdit ? colors.mainGreen : colors.orange,
+          color: !isEdit ? getColor("mainGreen") : getColor("orange"),
         }
       }}
     >
