@@ -34,11 +34,12 @@ import {
   YouTubeIcon,
   PinterestIcon,
 } from "@/components/common/Icons";
+import React from "react";
 
-interface MenuItem {
+export interface MenuItem {
   name: string;
   link?: string;
-  icon: JSX.Element | (() => JSX.Element);
+  icon: React.ReactNode;
   disabled?: boolean;
   subItems?: MenuItem[];
 }
@@ -46,7 +47,7 @@ interface MenuItem {
 export const brandItems: MenuItem[] = [
   {
     name: "Persona",
-    icon: () => <PersonOutlined style={{ fontSize: "16px" }} />,
+    icon: <PersonOutlined style={{ fontSize: "16px" }} />,
     subItems: [
       {
         name: "Create Persona",
@@ -116,7 +117,6 @@ export const contentItems: MenuItem[] = [
   },
 ];
 
-// Funnel menu items
 export const funnelItems: MenuItem[] = [
   { name: "Strategy", link: "/", icon: <StrategyIcon />, disabled: true },
   {
@@ -192,3 +192,13 @@ export const strategyItems: MenuItem[] = [
   { name: "KPI’s", link: "#", icon: <KpiIcon />, disabled: true },
   { name: "AI Assistant", link: "#", icon: <AIIcon />, disabled: true },
 ];
+
+const defaultListLinks: MenuItem[] = [
+  // { name: "Home", href: "/persons", icon: PeopleAltIcon },
+  // { name: "Create Persona", href: "/create", icon: PersonAddIcon },
+  // { name: "Management", href: "/management", icon: ManageAccountsIcon },
+  // { name: "Forms", href: "/forms", icon: DynamicFormIcon },
+  // { name: "Articles", href: "/articles", icon: NewspaperIcon },
+];
+
+export default defaultListLinks;

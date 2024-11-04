@@ -4,11 +4,10 @@ import { Box, Typography } from "@mui/material";
 import { getColor } from '@/utils/getColor';
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 
-// Define the props type
 interface ToggleEditProps {
-  onClick: () => void; // Function to handle the click event
-  isEdit: boolean;     // Boolean indicating edit mode
-  loading: boolean;    // Boolean indicating loading state
+  onClick: () => void;
+  isEdit: boolean;    
+  loading: boolean;   
 }
 
 const ToggleEdit: React.FC<ToggleEditProps> = ({ onClick, isEdit, loading }) => {

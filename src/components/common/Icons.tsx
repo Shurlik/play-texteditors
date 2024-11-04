@@ -8,6 +8,10 @@ interface IconProps extends SVGProps<SVGSVGElement> {
   sx?: SxProps;
 }
 
+interface ArticlesIconProps {
+  size?: number;
+}
+
 export const AdsIcon: FC = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -335,11 +339,11 @@ export const IdeasIcon: FC = () => (
   </svg>
 );
 
-export const ArticlesIcon: FC = () => (
+export const ArticlesIcon: FC<ArticlesIconProps> = ({ size = 16 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
+    width={size}
+    height={size}
     viewBox="0 0 16 16"
     fill="none"
   >

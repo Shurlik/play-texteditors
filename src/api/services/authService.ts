@@ -19,10 +19,7 @@ const authService = {
     }
   },
 
-  async login(
-    username: string,
-    password: string
-  ): Promise<LoginResponse | void> {
+  async login(username: string, password: string): Promise<LoginResponse> {
     try {
       const response = await api.post<LoginResponse>("/auth/login", {
         username,
@@ -66,6 +63,17 @@ const authService = {
     }
   },
 
+  async getProfile(): Promise<User> {
+    try {
+      const response = await api.get<User>("/users/profile");
+      return response.data;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.error("Error fetching user profile:", error);
+      throw error;
+    }
+  },
+
   getCurrentUser(): User | null {
     const user = localStorage.getItem("user");
     return user ? JSON.parse(user) : null;
@@ -73,6 +81,17 @@ const authService = {
 
   getAccessToken(): string | null {
     return localStorage.getItem("accessToken");
+  },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async updateProfile(data: any, id: any) {
+    try {
+      const response = id
+        ? await api.put(`/users/profile/${id}`, { data })
+        : await api.put("/users/profile", { data });
+      return response.data;
+    } catch (e) {
+      console.log("error: ", e);
+    }
   },
 };
 
