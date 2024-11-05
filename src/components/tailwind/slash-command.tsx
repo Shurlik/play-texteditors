@@ -137,13 +137,14 @@ export const suggestionItems = createSuggestionItems([
       const ytregex = new RegExp(
         /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/,
       );
-
+// @ts-ignore
       if (ytregex.test(videoLink)) {
         editor
           .chain()
           .focus()
           .deleteRange(range)
           .setYoutubeVideo({
+            // @ts-ignore
             src: videoLink,
           })
           .run();
@@ -163,12 +164,14 @@ export const suggestionItems = createSuggestionItems([
       const tweetLink = prompt("Please enter Twitter Link");
       const tweetRegex = new RegExp(/^https?:\/\/(www\.)?x\.com\/([a-zA-Z0-9_]{1,15})(\/status\/(\d+))?(\/\S*)?$/);
 
+      // @ts-ignore
       if (tweetRegex.test(tweetLink)) {
         editor
           .chain()
           .focus()
           .deleteRange(range)
           .setTweet({
+            // @ts-ignore
             src: tweetLink,
           })
           .run();
