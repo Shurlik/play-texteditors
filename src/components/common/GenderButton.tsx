@@ -4,9 +4,10 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import { getColor } from "@/utils/getColor";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import female from "@/images/female.png";
-import male from "@/images/male.png";
-import nog from "@/images/nog.png";
+
+import female from "../../assets/images/female.png";
+import male from "../../assets/images/male.png";
+import nog from "../../assets/images/nog.png";
 
 interface GenderButtonProps {
   onClick: (gender: string) => void;
@@ -30,17 +31,17 @@ const GenderButton: React.FC<GenderButtonProps> = ({
   disabled,
 }) => {
   let selectedGender = "";
-  let selectedIcon = "";
+  let selectedIcon = null;
 
   if (gender === "Male") {
     selectedGender = "Male";
-    selectedIcon = String(male);
+    selectedIcon = male; // Use the imported image directly
   } else if (gender === "Female") {
     selectedGender = "Female";
-    selectedIcon = String(female);
+    selectedIcon = female; // Use the imported image directly
   } else if (gender === "Non-Binary") {
     selectedGender = "Non-Binary";
-    selectedIcon = String(nog);
+    selectedIcon = nog; // Use the imported image directly
   }
 
   const clickHandler = () => {
@@ -71,12 +72,14 @@ const GenderButton: React.FC<GenderButtonProps> = ({
       onClick={clickHandler}
     >
       <Box sx={{ height: "64px", position: "relative", width: "64px" }}>
-        <Image
-          alt="gender"
-          src={selectedIcon}
-          layout="fill"
-          objectFit="contain"
-        />
+        {selectedIcon && (
+          <Image
+            alt="gender"
+            src={selectedIcon}
+            layout="fill"
+            objectFit="contain"
+          />
+        )}
       </Box>
       <Typography
         sx={{

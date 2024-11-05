@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React, { useState, MouseEvent } from "react";
 
 import { Box, Typography } from "@mui/material";
@@ -8,10 +8,10 @@ import { useAuth } from "@/contexts/AuthContext";
 import FormatColorTextIcon from "@mui/icons-material/FormatColorText";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import officeBoy from "@/images/cartoon-office-boy.png";
-import officeGirl from "@/images/cartoon-office-girl.png";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 
+import officeBoy from "../../assets/images/cartoon-office-boy.png";
+import officeGirl from "../../assets/images/cartoon-office-girl.png";
 import DropMenu from "./DropMenu";
 
 interface UserMenuItemProps {
@@ -61,6 +61,9 @@ const UserMenuItem: React.FC<UserMenuItemProps> = ({ onLogout }) => {
         }}
       >
         <Image
+        width={"24"}
+        height={"24"}
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
           alt="user avatar"
           src={
             user?.image
@@ -69,8 +72,6 @@ const UserMenuItem: React.FC<UserMenuItemProps> = ({ onLogout }) => {
               ? officeGirl
               : officeBoy
           }
-          layout="fill"
-          objectFit="cover"
         />
       </Box>
       <Box

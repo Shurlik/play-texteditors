@@ -13,8 +13,8 @@ import { getColor } from "@/utils/getColor";
 import { loginInputStyles } from "@/constants/theme/inputStyles";
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
-import imageAdd from "@/images/imageAdd.png";
 
+import imageAdd from "../../assets/images/imageAdd.png";
 import VisuallyHiddenInput from "../services/VisuallyHiddenInput";
 import GenderButton from "./GenderButton";
 import Loader from "./Loader";
@@ -35,7 +35,6 @@ const colors = {
 
 const CreationStarter: React.FC<CreationStarterProps> = ({
   onFinish,
-  setShowStart,
 }) => {
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -101,7 +100,7 @@ const CreationStarter: React.FC<CreationStarterProps> = ({
       }
       await fullPersonCreate(String(data.id));
       if (isFull) {
-        navigate.push("/persons", { replace: true });
+        navigate.push("/persons");
       } else {
         onFinish(String(data.id));
       }

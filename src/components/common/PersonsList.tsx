@@ -9,9 +9,9 @@ import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import DownloadIcon from "@mui/icons-material/Download";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import officeBoy from "@/images/cartoon-office-boy.png";
-import officeGirl from "@/images/cartoon-office-girl.png";
 
+import officeBoy from "../../assets/images/cartoon-office-boy.png";
+import officeGirl from "../../assets/images/cartoon-office-girl.png";
 import DropMenu from "./DropMenu";
 
 interface Person {
@@ -140,7 +140,7 @@ const PersonsList: React.FC<PersonsListProps> = ({
       headerName: "Image",
       flex: 2,
       headerAlign: "center",
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       renderCell: (params: any) => {
         return (
           <Box
@@ -186,7 +186,7 @@ const PersonsList: React.FC<PersonsListProps> = ({
       headerName: "Actions",
       flex: 2,
       type: "actions",
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       renderCell: (params: any) => (
         <Button
           disabled={disabled}
@@ -203,7 +203,7 @@ const PersonsList: React.FC<PersonsListProps> = ({
       headerName: "",
       flex: 1,
       type: "actions",
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       getActions: (params: any) => [
         <GridActionsCellItem
           icon={<MoreVertIcon sx={{ color: colors.orange }} />}

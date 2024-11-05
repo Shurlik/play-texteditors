@@ -1,4 +1,4 @@
-// BrandSection.tsx
+"use client"
 import React, { useState } from "react";
 
 import { ExpandLess, ExpandMore, Highlight } from "@mui/icons-material";

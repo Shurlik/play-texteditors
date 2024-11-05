@@ -2,9 +2,9 @@ import React from "react";
 
 import { Box, Drawer, Typography } from "@mui/material";
 import { getColor } from "@/utils/getColor";
-import officeBoy from "@/images/cartoon-office-boy.png";
-import officeGirl from "@/images/cartoon-office-girl.png";
 
+import officeBoy from "../../assets/images/cartoon-office-boy.png";
+import officeGirl from "../../assets/images/cartoon-office-girl.png";
 import FormattedTextDisplay from "../services/FormattedTextDisplay";
 import PersonCardHead from "./PersonCardHead";
 
@@ -33,7 +33,7 @@ interface Person {
 }
 
 interface DrawerPersFormDetailsProps {
-  person: Person;
+  person: Person | null; // Ensure person can be null
   setDetails: (details: Person | null) => void;
   details: Person | null;
 }
@@ -50,6 +50,20 @@ const DrawerPersFormDetails: React.FC<DrawerPersFormDetailsProps> = ({
   setDetails,
   details,
 }) => {
+  // Check if person and its fields are defined
+  const fields = person?.fields || {}; // Default to an empty object if person or fields is undefined
+
+  const placeOfResidence = fields["Place of residence"] || "Unknown";
+  const userImage =
+    fields["User Image"]?.length > 0
+      ? fields["User Image"][0].url
+      : fields["Gender"] === "Female"
+      ? officeGirl
+      : officeBoy;
+  const name = fields["Name"] || "Unnamed";
+  const age = fields["Age"] || "N/A";
+  const work = fields["Job title"] || "No Title";
+
   return (
     <Drawer
       anchor="right"
@@ -76,17 +90,11 @@ const DrawerPersFormDetails: React.FC<DrawerPersFormDetailsProps> = ({
         }}
       >
         <PersonCardHead
-          place={person.fields["Place of residence"]}
-          image={
-            person.fields["User Image"]?.length
-              ? (person.fields["User Image"][0].url as string) // Cast to string
-              : person.fields["Gender"] === "Female"
-              ? officeGirl // Cast to string
-              : officeBoy // Cast to string
-          }
-          name={person.fields["Name"]}
-          age={person.fields["Age"]}
-          work={person.fields["Job title"]}
+          place={placeOfResidence}
+          image={userImage}
+          name={name}
+          age={age}
+          work={work}
           small
         />
         <Box>
@@ -96,7 +104,7 @@ const DrawerPersFormDetails: React.FC<DrawerPersFormDetailsProps> = ({
                 {d}
               </Typography>
               <FormattedTextDisplay custom={colors.white}>
-                {person.fields[d]}
+                {fields[d] || "N/A"} {/* Add fallback for undefined fields */}
               </FormattedTextDisplay>
             </Box>
           ))}

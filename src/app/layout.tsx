@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { ReactNode } from "react";
+import { ToastContainer } from "react-toastify";
 
 import { Box } from "@mui/material";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { getColor } from "@/utils/getColor";
 import DateLocalizationProvider from "@/components/providers/DateLocalizationProvider";
+import MainLayout from "@/components/layouts/MainLayout";
 import Version from "@/components/services/Version";
 
 import "./globals.css";
@@ -36,14 +38,18 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <DateLocalizationProvider>
-            <Version />
-            <AuthProvider>
-              <Box
-                sx={{ height: "100vh", backgroundColor: colors.backgroundMain }}
-              >
-                {children}
-              </Box>
-            </AuthProvider>
+          <Version />
+          <AuthProvider>
+            <Box
+              sx={{ height: "100vh", backgroundColor: colors.backgroundMain }}
+            >
+              <MainLayout>
+              {children}
+              </MainLayout>
+              
+              <ToastContainer position="top-left" autoClose={1500} />
+            </Box>
+          </AuthProvider>
         </DateLocalizationProvider>
       </body>
     </html>

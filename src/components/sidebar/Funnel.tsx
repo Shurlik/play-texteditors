@@ -1,3 +1,4 @@
+"use client"
 import Link from "next/link";
 import React, { useState } from "react";
 
@@ -22,10 +23,7 @@ const colors = {
   orange: getColor("orange"),
 };
 
-const FunnelSection: React.FC<FunnelSectionProps> = ({
-  toggleSidebar,
-  isPinned,
-}) => {
+const FunnelSection: React.FC<FunnelSectionProps> = ({}) => {
   const [openItems, setOpenItems] = useState<{ [key: string]: boolean }>({
     Funnel: true,
   });

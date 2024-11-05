@@ -42,6 +42,7 @@ export interface MenuItem {
   icon: React.ReactNode;
   disabled?: boolean;
   subItems?: MenuItem[];
+  
 }
 
 export const brandItems: MenuItem[] = [

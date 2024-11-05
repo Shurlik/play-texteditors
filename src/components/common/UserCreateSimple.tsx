@@ -275,7 +275,7 @@ const UserCreateSimple: React.FC<UserCreateSimpleProps> = ({
             )}
             <Button
               sx={{ marginTop: "1rem" }}
-              component="label"
+              component="label" // Ensure this is correctly set to "label"
               variant="contained"
               accept="image/*"
               startIcon={<CloudUploadIcon />}
@@ -297,17 +297,11 @@ const UserCreateSimple: React.FC<UserCreateSimpleProps> = ({
             color: colors.black,
             border: `1px solid ${colors.mainGreen}`,
             minWidth: "10rem",
-            minHeight: "3rem",
-            fontWeight: "bold",
-            backgroundColor: colors.mainGreen,
-            "&:hover": {
-              color: colors.black,
-              boxShadow: `0 0 2px 3px ${colors.mainGreen50}`,
-              backgroundColor: colors.mainGreen,
-            },
+            margin: "2rem auto",
+            display: "block",
           }}
         >
-          Generate
+          {loading ? "Creating..." : "Create User"}
         </Button>
       </Box>
     </Box>

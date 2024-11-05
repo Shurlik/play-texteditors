@@ -10,7 +10,7 @@ import { getColor } from "@/utils/getColor";
 import authService from "@/api/services/authService";
 import ImageSearchIcon from "@mui/icons-material/ImageSearch";
 
-import noLogo from "../assets/images/no-logo.png";
+import noLogo from "../../assets/images/no-logo.png";
 import Loader from "./Loader";
 
 const colors = {
