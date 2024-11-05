@@ -32,7 +32,7 @@ interface AISelectorCommandsProps {
 }
 
 const AISelectorCommands = ({ onSelect }: AISelectorCommandsProps) => {
-  const { editor } = useEditor();
+  const { editor }: {editor: any} = useEditor();
 
   return (
     <>

@@ -17,8 +17,9 @@ const AICompletionCommands = ({
           className="gap-2 px-4"
           value="replace"
           onSelect={() => {
+            // @ts-ignore
             const selection = editor.view.state.selection;
-
+// @ts-ignore
             editor
               .chain()
               .focus()
@@ -39,7 +40,9 @@ const AICompletionCommands = ({
           className="gap-2 px-4"
           value="insert"
           onSelect={() => {
+            // @ts-ignore
             const selection = editor.view.state.selection;
+            // @ts-ignore
             editor
               .chain()
               .focus()
