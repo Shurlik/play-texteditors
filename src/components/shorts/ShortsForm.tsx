@@ -1,5 +1,5 @@
-import { useRouter } from 'next/router';
-import React, { useState,} from 'react';
+import { useSearchParams } from 'next/navigation';
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import useSWR from 'swr';
@@ -16,24 +16,25 @@ interface ShortsFormProps {
   loading: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setFormData: (data: any) => void;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   createShorts: (data: any) => Promise<void>;
   steps: number;
   setSteps: (step: number | null) => void;
   selectedValues: string[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   person?: { fields: Record<string, any> };
 }
 
 const ShortsForm: React.FC<ShortsFormProps> = ({ loading, setFormData, createShorts, steps, setSteps, selectedValues, person }) => {
-  const router = useRouter();
-  const { articleId } = router.query as { articleId?: string };
+  const searchParams = useSearchParams();
+  const articleId = searchParams.get('articleId');
   const [showOptions, setShowOptions] = useState(false);
 
   const { data = [], isLoading } = useSWR(articleId ? null : '/cos/articles', () => getArticles());
 
   const articles = !articleId
     ? !isLoading
+     // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ? data.articles.map((p: any) => (
           <MenuItem key={p.id} value={p.id}>
             {p.fields['Blog Title']}
@@ -72,7 +73,7 @@ const ShortsForm: React.FC<ShortsFormProps> = ({ loading, setFormData, createSho
       model: 'gpt',
     },
   });
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   const onSubmit = async (data: any) => {
     if (showOptions && !data.personActionDetails) {
       toast.warning('Please provide details about Action');
