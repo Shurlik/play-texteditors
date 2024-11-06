@@ -192,7 +192,7 @@ const PersonDetail = () => {
             src={
               previewUrl ||
               data?.fields?.["User Image"]?.[0]?.url ||
-              (data?.fields?.Gender === "Female" ? officeGirl : officeBoy)
+              (data?.fields?.Gender === "Female" ? officeGirl.src : officeBoy.src)
             }
             sx={{
               width: "100%",
