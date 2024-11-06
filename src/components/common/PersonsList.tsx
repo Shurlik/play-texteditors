@@ -60,7 +60,7 @@ interface PersonsListProps {
 const PersonsList: React.FC<PersonsListProps> = ({
   persons,
   handleDeletePerson,
-  handleEditPerson,
+  // handleEditPerson,
   listPersonsToDelete,
   setListPersonsToDelete,
   disabled,
@@ -71,11 +71,11 @@ const PersonsList: React.FC<PersonsListProps> = ({
 
   const navigate = useRouter();
 
-  const handleItemClick = (item: string) => {
-    const downloadUrl = `${LINK}/files/download/${id}`;
-    simulateDownloadClick(downloadUrl);
-    handleClose();
-  };
+  // const handleItemClick = (item: string) => {
+  //   const downloadUrl = `${LINK}/files/download/${id}`;
+  //   simulateDownloadClick(downloadUrl);
+  //   handleClose();
+  // };
 
   const handleClick = (event: React.MouseEvent<HTMLElement>, id: string) => {
     setAnchorEl(event.currentTarget);
@@ -127,7 +127,6 @@ const PersonsList: React.FC<PersonsListProps> = ({
       color: colors.red,
     },
   ];
-  persons.forEach((p) => console.log(p.fields["User Image"]));
   const data = persons.map((p) => ({
     id: p.id,
     name: p.fields["Name"],

@@ -153,7 +153,8 @@ const PersonCard: React.FC<PersonCardProps> = ({
               <PersonCardHead
                 name={fields["Name"]}
                 image={
-                  fields["User Image"]?.length > 0
+                  fields["User Image"]?.length > 0 &&
+                  fields["User Image"][0].url
                     ? fields["User Image"][0].url
                     : fields["Gender"] === "Female"
                     ? officeGirl
@@ -350,17 +351,60 @@ const PersonCard: React.FC<PersonCardProps> = ({
           </Box>
         </Box>
       </Box>
+      <Box
+				onClick={handleClick}
+				sx={{
+					overflow: 'hidden',
+					boxSizing: 'border-box',
+					borderBottom: `1px solid ${isHovered ? colors.orange : colors.gray40}`,
+					borderLeft: `1px solid ${isHovered ? colors.orange : colors.gray40}`,
+					borderRight: `1px solid ${isHovered ? colors.orange : colors.gray40}`,
+					borderBottomRightRadius: '25px',
+					borderBottomLeftRadius: '25px',
+					width: '360px',
+					display: 'flex',
+					textAlign: 'center',
+					transition: 'border-color .8s, background-color .3s',
+					cursor: 'pointer',
+					userSelect: 'none',
+					backgroundColor: `${isSelected ? colors.orange : colors.black}`,
+				}}
+			>
+				<Box
+					sx={{
+						display: 'flex',
+						alignItems: 'center',
+						width: '100%',
+						justifyContent: 'center',
 
-      <Checkbox
-        checked={isSelected}
-        onClick={handleClick}
-        sx={{
-          marginTop: ".5rem",
-          "&.Mui-checked": {
-            color: colors.orange,
-          },
-        }}
-      />
+						paddingTop: '3px',
+						paddingBottom: '3px',
+						transition: '.3s',
+
+					}}
+					// onClick={handleClick}
+				>
+					<Checkbox
+						sx={{
+							color: colors.orange,
+							'&.Mui-checked': {
+								color: colors.white,
+							},
+						}}
+						checked={isSelected}
+						onChange={(event) => onSelectChange(id, event.target.checked)}
+						onClick={(event) => event.stopPropagation()}
+					/>
+					<Typography
+						variant='body1'
+						color={colors.white}
+						sx={{
+							fontWeight: '600',
+							fontSize: '1rem'
+						}}
+					>Select Person</Typography>
+				</Box>
+			</Box>
     </Box>
   );
 };
