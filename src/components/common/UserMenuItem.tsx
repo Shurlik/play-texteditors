@@ -69,8 +69,8 @@ const UserMenuItem: React.FC<UserMenuItemProps> = ({ onLogout }) => {
             user?.image
               ? user.image
               : user?.Gender === "Female"
-              ? officeGirl
-              : officeBoy
+              ? officeGirl.src
+              : officeBoy.src
           }
         />
       </Box>

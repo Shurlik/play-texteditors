@@ -136,8 +136,8 @@ const PersonsList: React.FC<PersonsListProps> = ({
     image: p.fields["User Image"]
       ? p.fields["User Image"][0]?.url
       : p.fields["Gender"] === "Female"
-      ? officeGirl
-      : officeBoy,
+      ? officeGirl.src
+      : officeBoy.src,
   }));
   const columns = [
     {

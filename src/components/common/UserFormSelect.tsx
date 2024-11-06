@@ -119,8 +119,8 @@ const UserFormSelect: React.FC<UserFormSelectProps> = ({
           person.fields?.["User Image"]?.length > 0
             ? person.fields["User Image"][0]?.url
             : person.fields?.["Gender"] === "Female"
-            ? officeGirl
-            : officeBoy
+            ? officeGirl.src
+            : officeBoy.src
         }
         name={person.fields?.["Name"] || "Unnamed"}
         age={person.fields?.["Age"] || "N/A"}

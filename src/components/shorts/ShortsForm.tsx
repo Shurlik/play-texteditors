@@ -73,8 +73,9 @@ const ShortsForm: React.FC<ShortsFormProps> = ({ loading, setFormData, createSho
       model: 'gpt',
     },
   });
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = async (data: any) => {
+    console.log(data)
     if (showOptions && !data.personActionDetails) {
       toast.warning('Please provide details about Action');
       return;
