@@ -7,7 +7,7 @@ import {
   Stepper,
   Typography,
 } from "@mui/material";
-import { useRouter } from "next/router"; // Import useRouter from next/router
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import useSWR from "swr";
 
@@ -75,10 +75,11 @@ const FormLayout: React.FC<FormLayoutProps> = ({
   setLoading,
   setActiveStep,
 }) => {
+  const router = useRouter();
   const { data = {}, mutate } = useSWR(`/persons/${userId}`, () =>
     getRecordById(userId)
   );
-  const router = useRouter();
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [editedFields, setEditedFields] = useState<{ [key: string]: any }>({});
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -99,8 +100,9 @@ const FormLayout: React.FC<FormLayoutProps> = ({
       if (activeStep >= steps.length - 1) {
         await mutate();
         router.push("/persons");
+      } else {
+        await handleNext(mutate);
       }
-      await handleNext(mutate);
     } catch (e) {
       console.log("error: ", e);
     } finally {
