@@ -1,8 +1,8 @@
 "use client";
 import { useRouter } from "next/navigation";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
-import { Box, Button, useTheme } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
 import { getColor } from "@/utils/getColor";
 import { paginationModel } from "@/utils/helpers";
@@ -208,6 +208,7 @@ const PersonsList: React.FC<PersonsListProps> = ({
       type: "actions",
       getActions: (params: { id: string }) => [
         <GridActionsCellItem
+          key={params.id}
           icon={<MoreVertIcon sx={{ color: colors.orange }} />}
           label="Action"
           onClick={(event) => handleClick(event, params.id)}
@@ -254,6 +255,12 @@ const PersonsList: React.FC<PersonsListProps> = ({
           },
           "& .MuiTablePagination-toolbar": {
             color: colors.white,
+          },
+          "& .MuiSvgIcon-root": {
+            fill: colors.white,
+          },
+          "& .MuiToolbar-root > *": {
+            marginBottom: 0,
           },
         }}
       />

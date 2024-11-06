@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import moment from "moment/moment";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -23,6 +23,7 @@ interface Short {
 
 const colors = {
   orange: getColor("orange"),
+  white: getColor("white"),
 };
 
 const ShortsPage: React.FC = () => {
@@ -46,11 +47,11 @@ const ShortsPage: React.FC = () => {
       headerName: "View",
       getActions: (params) => [
         <GridActionsCellItem
-        key={params.id}
+          key={params.id}
           icon={<RemoveRedEyeIcon sx={{ color: colors.orange }} />}
           label="Action"
           onClick={(event) => {
-            event.stopPropagation(); 
+            event.stopPropagation();
             const record = data?.find((d) => d.id === params.id);
             setSelected(record || null);
           }}
@@ -140,6 +141,30 @@ const ShortsPage: React.FC = () => {
         disableColumnSelector
         disableRowSelectionOnClick
         onRowSelectionModelChange={handleSelectionChange}
+        sx={{
+          "& .MuiDataGrid-row": {
+            color: colors.white,
+          },
+          "& .MuiPaginationItem-root": {
+            color: colors.white,
+            "&.Mui-selected": {
+              backgroundColor: colors.orange,
+              color: colors.white,
+            },
+            "&:hover": {
+              backgroundColor: colors.orange,
+              color: colors.white,
+            },
+          },
+          "& .MuiSvgIcon-root": { 
+            fill: colors.white
+          },
+          "& .MuiToolbar-root > *": {
+            color: colors.white,
+            marginBottom: 0,
+          },
+          
+        }}
       />
       <DrawerContentDisplay {...{ selected, setSelected }} />
       {(loading || isLoading) && <FullPageLoader />}

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import {
   Box,
   Button,
@@ -108,7 +108,7 @@ const Persons: React.FC = () => {
       }
       setRequestText("");
       setSelectedPersons({});
-       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Error fetching streams:", error);
       if (error.message === "Unauthorized") {
