@@ -1,3 +1,4 @@
+"use client";
 import {
   Box,
   Button,
@@ -7,7 +8,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -69,8 +70,8 @@ const AdsForm: React.FC<AdsFormProps> = ({
   steps,
   formData,
 }) => {
-  const router = useRouter();
-  const { ad } = router.query;
+  const searchParams = useSearchParams();
+  const ad = searchParams.get("ad");
 
   const [variant, setVariant] = useState<string>("");
 

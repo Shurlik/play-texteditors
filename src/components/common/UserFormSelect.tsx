@@ -27,7 +27,7 @@ const ADD_DATA = [
 ];
 
 interface UserFormSelectProps {
-  person: any; 
+  person: any;
   selectedValues: string[];
   setSelectedValues: React.Dispatch<React.SetStateAction<string[]>>;
   setSteps: React.Dispatch<React.SetStateAction<number | null>>;
@@ -45,6 +45,7 @@ const UserFormSelect: React.FC<UserFormSelectProps> = ({
   selectedValues,
   setSelectedValues,
   setSteps,
+  steps
 }) => {
   const [details, setDetails] = useState<boolean | null>(null);
 
@@ -65,8 +66,8 @@ const UserFormSelect: React.FC<UserFormSelectProps> = ({
   };
 
   const nextStepHandler = () => {
-    setSteps(null);
-    setTimeout(() => setSteps((prev) => (prev ? prev + 1 : null)), 350);
+    setSteps(steps + 1);
+    //setTimeout(() => setSteps((prev) => (prev ? prev + 1 : null)), 350);
   };
 
   useEffect(() => {

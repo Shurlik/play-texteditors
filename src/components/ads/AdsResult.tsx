@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -8,20 +8,19 @@ import { addAds } from "@/api/services/adsService";
 import OutputsTextField from "../common/OutputsTextField";
 import ToggleEdit from "../services/ToggleEdit";
 
-interface FormData {
-  ad: string;
-  personId: string;
-  name: string;
-}
-
+// Define types for the props
 interface AdsResultProps {
   result: string;
-  setResult: (value: string) => void;
+  setResult: React.Dispatch<React.SetStateAction<string>>;
   loading: boolean;
-  formData: FormData;
-  setLoading: (value: boolean) => void;
-  steps: number;
-  setSteps: (value: number | null) => void;
+  formData: {
+    ad: string;
+    personId: string;
+    name: string;
+  };
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  steps: number | null;
+  setSteps: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
 const AdsResult: React.FC<AdsResultProps> = ({
@@ -33,9 +32,10 @@ const AdsResult: React.FC<AdsResultProps> = ({
   steps,
   setSteps,
 }) => {
-  const resultBoxRef = useRef<HTMLDivElement>(null);
-  const [edit, setEdit] = useState(false);
-  const router = useRouter();
+  const resultBoxRef = useRef<HTMLDivElement | null>(null);
+  const [edit, setEdit] = useState<boolean>(false);
+
+  const router = useRouter(); // Use next/router to navigate
 
   const saveHandler = async () => {
     setLoading(true);
@@ -45,15 +45,17 @@ const AdsResult: React.FC<AdsResultProps> = ({
       personId: formData.personId,
       name: formData.name,
     };
+
     try {
       await addAds(data);
       toast.success("Added");
-      router.replace(`/ads/${formData.ad}`);
+      router.push(`/ads/${formData.ad}`); // Navigate using Next.js routing
+      setLoading(false);
     } catch (e) {
-      console.error("Error:", e);
-    } finally {
+      console.error("Error: ", e);
       setLoading(false);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -65,7 +67,10 @@ const AdsResult: React.FC<AdsResultProps> = ({
   const previousStepHandler = () => {
     setResult("");
     setSteps(null);
-    setTimeout(() => setSteps(steps - 1), 400);
+    setTimeout(
+      () => setSteps((prev) => (prev !== null ? prev - 1 : null)),
+      400
+    );
   };
 
   return (
@@ -108,6 +113,11 @@ const AdsResult: React.FC<AdsResultProps> = ({
           Return
         </Button>
       </Box>
+      <ToggleEdit
+        isEdit={edit}
+        onClick={() => setEdit((old) => !old)}
+        loading={loading}
+      />
     </Container>
   );
 };

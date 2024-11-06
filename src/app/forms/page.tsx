@@ -1,170 +1,122 @@
-"use client"
-import {
-  getArticleStream,
-  getOutlineStream,
-  getResearchStream,
-  getThumbnailStream,
-} from "@/api/services/cosService";
-import React, { useState } from "react";
+"use client";
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 import { toast } from "react-toastify";
 import useSWR from "swr";
 
 import { Box, FormControl, MenuItem, Select } from "@mui/material";
 import { getAllRecords } from "@/api/services/airtableService";
+import { getArticleStream, getOutlineStream, getResearchStream, getThumbnailStream } from "@/api/services/cosService";
 import authService from "@/api/services/authService";
-import BlogPostForm from "@/components/forms/BlogPostForm";
-import CosFinal from "@/components/articles/CosFinal";
-import CosImages from "@/components/articles/CosImages";
-import CosOutline from "@/components/articles/CosOutline";
-import CosOutputs from "@/components/articles/CosOutputs";
-import CosSelectedImage from "@/components/articles/CosSelectedImage";
-import CustomSlide from "@/components/common/CustomSlide";
-import FullPageLoader from "@/components/common/FullPageLoader";
-import Loader from "@/components/common/Loader";
-import PageHeader from "@/components/common/PageHeader";
-import ResearchResult from "@/components/articles/ResearchResult";
-import UserFormSelect from "@/components/common/UserFormSelect";
+import BlogPostForm from '@/components/forms/BlogPostForm';
+import CosFinal from '@/components/articles/CosFinal';
+import CosImages from '@/components/articles/CosImages';
+import CosOutline from '@/components/articles/CosOutline';
+import CosOutputs from '@/components/articles/CosOutputs';
+import CosSelectedImage from '@/components/articles/CosSelectedImage';
+import CustomSlide from '@/components/common/CustomSlide';
+import FullPageLoader from '@/components/common/FullPageLoader';
+import Loader from '@/components/common/Loader';
+import PageHeader from '@/components/common/PageHeader';
+import ResearchResult from '@/components/articles/ResearchResult';
+import UserFormSelect from '@/components/common/UserFormSelect';
 
-// Define the type for Person
-interface Person {
+interface PersonData {
   id: string;
-  fields: {
-    Name: string;
-  };
+  fields: { Name: string };
 }
 
 const ArticleCreatePage: React.FC = () => {
-  const [person, setPerson] = useState<Person | null>(null);
+  const router = useRouter();
+  const [person, setPerson] = useState<string | null>(null);
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
-  const {
-    data = [],
-    error,
-    isLoading,
-  } = useSWR<Person[]>("/persons", getAllRecords);
+  const { data = [], isLoading } = useSWR<PersonData[]>('/persons', getAllRecords);
   const [steps, setSteps] = useState<number>(0);
-  const [research, setResearch] = useState<string>("");
-  const [outline, setOutline] = useState<string>("");
-  const [prompt, setPrompt] = useState<string>("");
-  const [final, setFinal] = useState<string>("");
+  const [research, setResearch] = useState<string>('');
+  const [outline, setOutline] = useState<string>('');
+  const [prompt, setPrompt] = useState<string>('');
+  const [final, setFinal] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const [provider, setProvider] = useState<string>("gpt");
+  const [provider, setProvider] = useState<string>('gpt');
   const [airId, setAirId] = useState<string | null>(null);
   const [selectedImageId, setSelectedImageId] = useState<string | null>(null);
+  console.log(steps)
 
-  // === Functions
+  // Helper function to manage stream results
   const resultStream = async (
     airId: string | null,
     setter: React.Dispatch<React.SetStateAction<string>>,
-    streamSource: string
+    streamSource: 'research' | 'outline' | 'article' | 'thumbnail'
   ) => {
-    if (!streamSource) {
-      toast.error("Need to set Source");
+    if (!streamSource || !airId) {
+      toast.error('Need to set Source or valid ID');
       return;
     }
-    let getter: (
-      airId: string | null,
-      callback: (chunk: string) => void,
-      provider: string
-    ) => Promise<void>;
 
-    switch (streamSource) {
-      case "research":
-        getter = getResearchStream;
-        break;
-      case "outline":
-        getter = getOutlineStream;
-        break;
-      case "article":
-        getter = getArticleStream;
-        break;
-      case "thumbnail":
-        getter = getThumbnailStream;
-        break;
-      default:
-        toast.error("Wrong Source");
-        return;
-    }
+    const streamMap: Record<typeof streamSource, (id: string, callback: (chunk: string) => void, provider: string) => Promise<void>> = {
+      research: getResearchStream,
+      outline: getOutlineStream,
+      article: getArticleStream,
+      thumbnail: getThumbnailStream,
+    };
+
+    const getter = streamMap[streamSource];
 
     setLoading(true);
-    setter("");
+    setter('');
     try {
-      await getter(
-        airId,
-        (chunk) => {
-          setter((prev) => prev + chunk);
-        },
-        provider
-      );
-      setLoading(false);
+      await getter(airId, (chunk) => setter((prev) => prev + chunk), provider);
     } catch (e) {
-      console.error("Error fetching streams:", e);
-      if (e instanceof Error && e.message === "Unauthorized") {
+      console.error('Error fetching streams:', e);
+      if (e instanceof Error && e.message === 'Unauthorized') {
         await authService.logout();
-        // Redirect to login or show a message
-      } else {
-        console.log("Error: ", e);
+        router.push('/login');
       }
+    } finally {
       setLoading(false);
     }
   };
 
-  const researchStream = async (airId: string | null) => {
-    await resultStream(airId, setResearch, "research");
-  };
+  // Triggered stream functions for each stage
+  const researchStream = async () => await resultStream(airId, setResearch, 'research');
+  const outlineStream = async () => await resultStream(airId, setOutline, 'outline');
+  const articleStream = async () => await resultStream(airId, setFinal, 'article');
+  const thumbnailStream = async () => await resultStream(airId, setPrompt, 'thumbnail');
 
-  const outlineStream = async () => {
-    await resultStream(airId, setOutline, "outline");
-  };
-
-  const articleStream = async () => {
-    await resultStream(airId, setFinal, "article");
-  };
-
-  const thumbnailStream = async () => {
-    await resultStream(airId, setPrompt, "thumbnail");
-  };
-
+  // Handles selection of person
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setPerson(event.target.value as Person);
+    setPerson(event.target.value as string);
   };
 
-  const persons = !isLoading ? (
-    data.map((p) => (
-      <MenuItem key={p?.id} value={p}>
-        {p?.fields?.Name}
-      </MenuItem>
-    ))
-  ) : (
-    <MenuItem value={null}>
-      <Loader />
-    </MenuItem>
-  );
+  const persons = !isLoading
+    ? data.map((p) => (
+        <MenuItem key={p.id} value={p.fields.Name}>
+          {p.fields.Name}
+        </MenuItem>
+      ))
+    : <MenuItem value={null}><Loader/></MenuItem>;
 
   return (
     <Box
       sx={{
-        justifyContent: "center",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        overflow: "hidden",
+        justifyContent: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        overflow: 'hidden'
       }}
     >
       <CustomSlide condition={steps === 0}>
-        <PageHeader header={"Select person to continue"} sx={{ flexGrow: 1 }} />
-        <FormControl
-          sx={{ marginBottom: "1rem", marginTop: "3rem", width: "100%" }}
-          variant="standard"
-        >
+        <PageHeader header="Select person to continue" sx={{ flexGrow: 1 }} />
+        <FormControl sx={{ marginBottom: '1rem', marginTop: '3rem', width: '100%' }} variant="standard">
           <Select
             fullWidth
-            variant={"outlined"}
-            labelId="demo-simple-select-standard-label"
-            value={person || ""}
+            variant="outlined"
+            value={person || ''}
             onChange={handleChange}
             label="Person"
           >
-            <MenuItem value={null}>
+            <MenuItem value="">
               <em>None</em>
             </MenuItem>
             {persons}
@@ -180,7 +132,6 @@ const ArticleCreatePage: React.FC = () => {
           />
         )}
       </CustomSlide>
-
       <CustomSlide condition={steps === 1}>
         <BlogPostForm
           person={person}
@@ -194,92 +145,25 @@ const ArticleCreatePage: React.FC = () => {
           researchStream={researchStream}
         />
       </CustomSlide>
-
       <CustomSlide condition={steps === 2}>
-        <ResearchResult
-          {...{
-            research,
-            setResearch,
-            airId,
-            setSteps,
-            steps,
-            outline,
-            loading,
-            setLoading,
-            outlineStream,
-          }}
-        />
+        <ResearchResult {...{ research, setResearch, airId, setSteps, steps, outline, loading, setLoading, outlineStream }} />
       </CustomSlide>
-
       <CustomSlide condition={steps === 3}>
-        <CosOutline
-          {...{
-            airId,
-            setSteps,
-            steps,
-            outline,
-            setOutline,
-            setFinal,
-            provider,
-            loading,
-            articleStream,
-            setLoading,
-          }}
-        />
+        <CosOutline {...{ airId, setSteps, steps, outline, setOutline, setFinal, provider, loading, articleStream, setLoading }} />
       </CustomSlide>
-
       <CustomSlide condition={steps === 4}>
-        <CosOutputs
-          {...{
-            airId,
-            setSteps,
-            steps,
-            final,
-            setFinal,
-            provider,
-            loading,
-            setLoading,
-            thumbnailStream,
-          }}
-        />
+        <CosOutputs {...{ airId, setSteps, steps, final, setFinal, provider, loading, setLoading, thumbnailStream }} />
       </CustomSlide>
-
       <CustomSlide condition={steps === 5}>
-        <CosImages
-          {...{
-            airId,
-            setSteps,
-            selectedImageId,
-            setSelectedImageId,
-            steps,
-            prompt,
-            setPrompt,
-            provider,
-            loading,
-            setLoading,
-          }}
-        />
+        <CosImages {...{ airId, setSteps, selectedImageId, setSelectedImageId, steps, prompt, setPrompt, provider, loading, setLoading }} />
       </CustomSlide>
-
       <CustomSlide condition={steps === 6}>
-        <CosSelectedImage
-          {...{
-            airId,
-            setSteps,
-            selectedImageId,
-            steps,
-            prompt,
-            setPrompt,
-            loading,
-          }}
-        />
+        <CosSelectedImage {...{ airId, setSteps, selectedImageId, steps, prompt, setPrompt, loading }} />
       </CustomSlide>
-
       <CustomSlide condition={steps === 7}>
         <CosFinal {...{ airId, selectedImageId, steps, setSteps, loading }} />
       </CustomSlide>
-
-      {loading && <FullPageLoader position={"absolute"} />}
+      {loading && <FullPageLoader position="absolute" />}
     </Box>
   );
 };

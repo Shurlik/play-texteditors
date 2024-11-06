@@ -6,6 +6,7 @@ import { ToastContainer } from "react-toastify";
 import { Box } from "@mui/material";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { getColor } from "@/utils/getColor";
+import AuthLayout from "@/components/layouts/AuthLayout";
 import DateLocalizationProvider from "@/components/providers/DateLocalizationProvider";
 import MainLayout from "@/components/layouts/MainLayout";
 import Version from "@/components/services/Version";
@@ -37,20 +38,21 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <DateLocalizationProvider>
-          <Version />
-          <AuthProvider>
-            <Box
-              sx={{ height: "100vh", backgroundColor: colors.backgroundMain }}
-            >
-              <MainLayout>
-              {children}
-              </MainLayout>
-              
-              <ToastContainer position="top-left" autoClose={1500} />
-            </Box>
-          </AuthProvider>
-        </DateLocalizationProvider>
+       
+          <DateLocalizationProvider>
+            <Version />
+            <AuthProvider>
+              <Box
+                sx={{ height: "100vh", backgroundColor: colors.backgroundMain }}
+              >
+                 <AuthLayout>
+                <MainLayout>{children}</MainLayout>
+                </AuthLayout>
+                <ToastContainer position="top-left" autoClose={1500} />
+              </Box>
+            </AuthProvider>
+          </DateLocalizationProvider>
+        
       </body>
     </html>
   );
