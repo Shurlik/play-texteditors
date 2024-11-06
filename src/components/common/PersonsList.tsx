@@ -1,10 +1,11 @@
+"use client";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-import { Box, Button } from "@mui/material";
+import { Box, Button, useTheme } from "@mui/material";
 import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
-import { paginationModel } from "@/utils/helpers";
 import { getColor } from "@/utils/getColor";
+import { paginationModel } from "@/utils/helpers";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import DownloadIcon from "@mui/icons-material/Download";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
@@ -13,6 +14,25 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import officeBoy from "../../assets/images/cartoon-office-boy.png";
 import officeGirl from "../../assets/images/cartoon-office-girl.png";
 import DropMenu from "./DropMenu";
+
+const simulateDownloadClick = (url: string) => {
+  const link = document.createElement("a");
+  link.href = url;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
+const LINK = process.env.NEXT_PUBLIC_API_URL;
+
+const colors = {
+  red: getColor("red"),
+  silver: getColor("silver"),
+  orange: getColor("orange"),
+  white: getColor("white"),
+};
 
 interface Person {
   id: string;
@@ -33,46 +53,29 @@ interface PersonsListProps {
   handleDeletePerson: (id: string) => void;
   handleEditPerson: (id: string) => void;
   listPersonsToDelete: string[];
-  setListPersonsToDelete: (ids: string[]) => void;
+  setListPersonsToDelete: React.Dispatch<React.SetStateAction<string[]>>;
   disabled: boolean;
 }
-
-const simulateDownloadClick = (url: string) => {
-  const link = document.createElement("a");
-  link.href = url;
-  link.target = "_blank";
-  link.rel = "noopener noreferrer";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-};
-
-const LINK = process.env.NEXT_PUBLIC_API_URL;
-
-const colors = {
-  red: getColor("red"),
-  silver: getColor("silver"),
-  orange: getColor("orange"),
-};
 
 const PersonsList: React.FC<PersonsListProps> = ({
   persons,
   handleDeletePerson,
+  handleEditPerson,
   listPersonsToDelete,
   setListPersonsToDelete,
   disabled,
 }) => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [id, setId] = useState<string | null>(null);
   const open = Boolean(anchorEl);
 
-  const router = useRouter();
+  const navigate = useRouter();
 
-  // const handleItemClick = (item: { title: string }) => {
-  //   const downloadUrl = `${LINK}/files/download/${id}`;
-  //   simulateDownloadClick(downloadUrl);
-  //   handleClose();
-  // };
+  const handleItemClick = (item: string) => {
+    const downloadUrl = `${LINK}/files/download/${id}`;
+    simulateDownloadClick(downloadUrl);
+    handleClose();
+  };
 
   const handleClick = (event: React.MouseEvent<HTMLElement>, id: string) => {
     setAnchorEl(event.currentTarget);
@@ -86,7 +89,11 @@ const PersonsList: React.FC<PersonsListProps> = ({
 
   const editHandler = () => {
     if (id) {
-      router.push(`/persons/${id}`);
+      navigate.push(`/persons/${id}`, {
+        state: {
+          edit: true,
+        },
+      });
     }
   };
 
@@ -94,19 +101,20 @@ const PersonsList: React.FC<PersonsListProps> = ({
     if (id) {
       const downloadUrl = `${LINK}/files/download/${id}`;
       simulateDownloadClick(downloadUrl);
-      handleClose();
     }
+    handleClose();
   };
 
   const deleteHandler = () => {
     if (id) {
       handleDeletePerson(id);
-      handleClose();
     }
+    setAnchorEl(null);
+    setId(null);
   };
 
   const detailHandler = (id: string) => {
-    router.push(`/persons/${id}`);
+    navigate.push(`/persons/${id}`);
   };
 
   const MENU_DATA = [
@@ -119,29 +127,26 @@ const PersonsList: React.FC<PersonsListProps> = ({
       color: colors.red,
     },
   ];
-
+  persons.forEach((p) => console.log(p.fields["User Image"]));
   const data = persons.map((p) => ({
     id: p.id,
     name: p.fields["Name"],
     age: p.fields["Age"],
     location: p.fields["Country"],
     owner: p.user.name,
-    image:
-      p.fields["User Image"]?.length > 0
-        ? p.fields["User Image"][0]?.url
-        : p.fields["Gender"] === "Female"
-        ? officeGirl
-        : officeBoy,
+    image: p.fields["User Image"]
+      ? p.fields["User Image"][0]?.url
+      : p.fields["Gender"] === "Female"
+      ? officeGirl
+      : officeBoy,
   }));
-
   const columns = [
     {
       field: "image",
       headerName: "Image",
       flex: 2,
       headerAlign: "center",
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      renderCell: (params: any) => {
+      renderCell: (params: { value: string }) => {
         return (
           <Box
             sx={{
@@ -162,8 +167,8 @@ const PersonsList: React.FC<PersonsListProps> = ({
               }}
             >
               <Box
-                component="img"
-                alt="logo"
+                component={"img"}
+                alt={"logo"}
                 src={params.value}
                 sx={{
                   width: "100%",
@@ -186,13 +191,12 @@ const PersonsList: React.FC<PersonsListProps> = ({
       headerName: "Actions",
       flex: 2,
       type: "actions",
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      renderCell: (params: any) => (
+      renderCell: (params: { id: string }) => (
         <Button
           disabled={disabled}
           onClick={() => detailHandler(params.id)}
-          variant="outlined"
-          color="secondary"
+          variant={"outlined"}
+          color={"secondary"}
         >
           View details
         </Button>
@@ -203,12 +207,10 @@ const PersonsList: React.FC<PersonsListProps> = ({
       headerName: "",
       flex: 1,
       type: "actions",
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      getActions: (params: any) => [
+      getActions: (params: { id: string }) => [
         <GridActionsCellItem
           icon={<MoreVertIcon sx={{ color: colors.orange }} />}
           label="Action"
-          key={params.id}
           onClick={(event) => handleClick(event, params.id)}
         />,
       ],
@@ -241,7 +243,20 @@ const PersonsList: React.FC<PersonsListProps> = ({
         rowHeight={75}
         disableColumnSelector
         disableRowSelectionOnClick
-        onRowSelectionModelChange={handleSelectionChange}
+        onRowSelectionModelChange={(newSelection) => {
+          handleSelectionChange(newSelection);
+        }}
+        sx={{
+          "& .MuiDataGrid-row": {
+            color: colors.white,
+          },
+          "& .MuiPaginationItem-root": {
+            color: colors.white,
+          },
+          "& .MuiTablePagination-toolbar": {
+            color: colors.white,
+          },
+        }}
       />
       <DropMenu
         disabled={disabled}
