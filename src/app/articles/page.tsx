@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -64,12 +64,10 @@ const colors = {
 const ArticlesPage: React.FC = () => {
   const router = useRouter(); // Use Next.js router
 
-  const {
-    data = {},
-    error,
-    isLoading,
-    mutate,
-  } = useSWR<ArticlesResponse>("/cos/articles", getArticles);
+  const { data = {}, mutate } = useSWR<ArticlesResponse>(
+    "/cos/articles",
+    getArticles
+  );
 
   const [listArticlesToDelete, setListArticleToDelete] = useState<string[]>([]);
   const [selected, setSelected] = useState<Article | null>(null);
@@ -119,6 +117,7 @@ const ArticlesPage: React.FC = () => {
       headerName: "Click to View",
       getActions: (params) => [
         <GridActionsCellItem
+          key={params.id}
           icon={<RemoveRedEyeIcon sx={{ color: colors.orange }} />}
           label="Action"
           onClick={(event) => {
@@ -142,6 +141,7 @@ const ArticlesPage: React.FC = () => {
       headerName: "Actions",
       getActions: (params) => [
         <GridActionsCellItem
+          key={params.id}
           icon={<MoreVertIcon sx={{ color: colors.orange }} />}
           label="Action"
           onClick={(event) => {

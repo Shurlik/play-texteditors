@@ -20,7 +20,6 @@ import PageHeader from "../common/PageHeader";
 import AdsLeadMagnetSelector from "./AdsLeadMagnetSelector";
 import AdsOfferSelector from "./AdsOfferSelector";
 
-// Define types for form data and createBenefits function
 type FormData = {
   ad: string;
   title: string;

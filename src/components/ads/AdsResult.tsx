@@ -29,13 +29,12 @@ const AdsResult: React.FC<AdsResultProps> = ({
   loading,
   formData,
   setLoading,
-  steps,
   setSteps,
 }) => {
   const resultBoxRef = useRef<HTMLDivElement | null>(null);
   const [edit, setEdit] = useState<boolean>(false);
 
-  const router = useRouter(); // Use next/router to navigate
+  const router = useRouter();
 
   const saveHandler = async () => {
     setLoading(true);
@@ -49,7 +48,7 @@ const AdsResult: React.FC<AdsResultProps> = ({
     try {
       await addAds(data);
       toast.success("Added");
-      router.push(`/ads/${formData.ad}`); // Navigate using Next.js routing
+      router.push(`/ads/${formData.ad}`); 
       setLoading(false);
     } catch (e) {
       console.error("Error: ", e);
