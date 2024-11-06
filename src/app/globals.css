@@ -2,28 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #ededed;
-    --foreground: #0a0a0a;
-  }
-}
-
 body {
-  color: var(--foreground);
-  background: var(--background);
+  color: #171717;
+  background: #ffffff;
   font-family: Arial, Helvetica, sans-serif;
-}
-.editor {
-  position: relative;
-  display: flex;
-  width: 100%;
-  height: 100%;
 }
 
 [data-lexical-editor] {
@@ -31,48 +13,14 @@ body {
   outline: none;
 }
 
-[data-lexical-editor] p {
-  margin: 0.8em 0;
-}
-
 .toolbar {
   padding: 8px;
-  border-bottom: 1px solid #E6E6E7;
+  display: flex;
+  gap: 8px;
 }
 
-.toolbar > button {
-  all: unset;
-  font-weight: 500;
-  padding: 8px;
-  border-radius: 6px;
-}
-
-.toolbar > button:hover {
-  background: #F4F4F5;
-}
-
-/* For mobile */
-.floating-threads {
-  display: none;
-}
-
-/* For desktop */
-.anchored-threads {
-  display: block;
-  max-width: 300px;
-  width: 100%;
-  position: absolute;
-  right: 4px;
-}
-
-@media (max-width: 640px) {
-  .floating-threads {
-    display: block;
-  }
-
-  .anchored-threads {
-    display: none;
-  }
+.toolbar button:hover {
+  background: #f4f4f5;
 }
 
 .placeholder {
@@ -81,4 +29,143 @@ body {
   top: 16px;
   pointer-events: none;
   opacity: 0.5;
+}
+
+/* Общий стиль для редактора */
+.ProseMirror {
+  font-family: Arial, sans-serif !important;
+  color: #333 !important;
+  line-height: 1.6 !important;
+  padding: 1rem !important;
+  background-color: #ffffff !important;
+  border: 1px solid #ddd !important;
+  border-radius: 8px !important;
+}
+
+/* Стили для заголовков */
+.ProseMirror h1 {
+  font-size: 2em !important;
+  font-weight: bold !important;
+  margin: 0.67em 0 !important;
+  color: #1a202c !important;
+  border-bottom: 2px solid #ddd !important;
+  padding-bottom: 0.3em !important;
+}
+
+.ProseMirror h2 {
+  font-size: 1.75em !important;
+  font-weight: bold !important;
+  margin: 0.75em 0 !important;
+  color: #2d3748 !important;
+  border-bottom: 1px solid #ddd !important;
+  padding-bottom: 0.2em !important;
+}
+
+.ProseMirror h3 {
+  font-size: 1.5em !important;
+  font-weight: bold !important;
+  margin: 0.75em 0 !important;
+  color: #4a5568 !important;
+}
+
+/* Стили для параграфов */
+.ProseMirror p {
+  margin: 1em 0 !important;
+}
+
+/* Стили для ссылок */
+.ProseMirror a {
+  color: #3182ce !important;
+  text-decoration: underline !important;
+}
+
+.ProseMirror a:hover {
+  color: #63b3ed !important;
+  text-decoration: none !important;
+}
+
+/* Стили для неупорядоченного списка */
+.ProseMirror ul {
+  list-style-type: disc !important;
+  padding-left: 1.5em !important;
+}
+
+.ProseMirror ul ul {
+  list-style-type: circle !important;
+}
+
+.ProseMirror ul li {
+  margin-bottom: 0.5em !important;
+}
+
+/* Стили для упорядоченного списка */
+.ProseMirror ol {
+  list-style-type: decimal !important;
+  padding-left: 1.5em !important;
+}
+
+.ProseMirror ol ol {
+  list-style-type: lower-alpha !important;
+}
+
+.ProseMirror ol li {
+  margin-bottom: 0.5em !important;
+}
+
+/* Стили для цитат */
+.ProseMirror blockquote {
+  border-left: 4px solid #e2e8f0 !important;
+  padding-left: 1em !important;
+  color: #718096 !important;
+  font-style: italic !important;
+  margin: 1em 0 !important;
+  background-color: #f7fafc !important;
+}
+
+/* Стили для изображений */
+.ProseMirror img {
+  max-width: 100% !important;
+  height: auto !important;
+  margin: 1em 0 !important;
+  border-radius: 8px !important;
+}
+
+/* Стили для списков задач */
+.ProseMirror .task-list-item {
+  display: flex !important;
+  align-items: center !important;
+  margin-bottom: 0.5em !important;
+}
+
+.ProseMirror .task-list-item input[type="checkbox"] {
+  margin-right: 0.5em !important;
+}
+
+/* Стили для выделенного текста */
+.ProseMirror strong {
+  font-weight: bold !important;
+}
+
+.ProseMirror em {
+  font-style: italic !important;
+}
+
+.ProseMirror u {
+  text-decoration: underline !important;
+}
+
+/* Стили для выделения кода */
+.ProseMirror code {
+  font-family: 'Courier New', monospace !important;
+  background-color: #f7fafc !important;
+  color: #e53e3e !important;
+  padding: 0.2em 0.4em !important;
+  border-radius: 4px !important;
+}
+
+/* Стили для пронумерованных и маркированных списков */
+.ProseMirror ul,
+.ProseMirror ol {
+  margin: 1em 0 !important;
+  padding-left: 1.5em !important;
 }

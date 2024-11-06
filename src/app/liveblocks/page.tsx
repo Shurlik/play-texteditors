@@ -1,11 +1,10 @@
-'use client'
+import { Room } from "./Room";
+import { Editor } from "./Editor";
 
-import React from 'react';
-
-const Liveblocks = () => {
+export default function Page() {
   return (
-    <div></div>
+    <Room>
+      <Editor/>
+    </Room>
   );
-};
-
-export default Liveblocks;
+}
