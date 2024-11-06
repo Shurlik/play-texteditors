@@ -59,6 +59,7 @@ interface ArticlesResponse {
 const colors = {
   orange: getColor("orange"),
   red: getColor("red"),
+  white: getColor("white"),
 };
 
 const ArticlesPage: React.FC = () => {
@@ -209,10 +210,7 @@ const ArticlesPage: React.FC = () => {
   }));
 
   const shortsHandler = () => {
-    router.push({
-      pathname: "/shorts/create",
-      query: { articleId: id },
-    });
+    router.push(`/shorts/create?articleId=${id}`);
   };
 
   const MENU_DATA = [
@@ -269,6 +267,23 @@ const ArticlesPage: React.FC = () => {
         disableColumnSelector
         disableRowSelectionOnClick
         onRowSelectionModelChange={handleSelectionChange}
+        sx={{
+          "& .MuiDataGrid-row": {
+            color: colors.white,
+          },
+          "& .MuiPaginationItem-root": {
+            color: colors.white,
+          },
+          "& .MuiTablePagination-toolbar": {
+            color: colors.white,
+          },
+          "& .MuiSvgIcon-root": {
+            fill: colors.white,
+          },
+          "& .MuiToolbar-root > *": {
+            marginBottom: 0,
+          },
+        }}
       />
       <DrawerContentDisplay {...{ selected, setSelected }} />
       <DropMenu
