@@ -1,20 +1,29 @@
-"use client"
+"use client";
 import { useState, useEffect } from 'react';
 
 const useSidebar = () => {
-  // Defining types for state variables
+  // Check for browser environment
+  const isBrowser = typeof window !== "undefined";
+
+  // Initialize state with a function to avoid SSR issues
   const [isSidebarPinned, setSidebarPinned] = useState<boolean>(() => {
-    return JSON.parse(localStorage.getItem('isSidebarPinned') || 'false') || false;
+    if (isBrowser) {
+      return JSON.parse(localStorage.getItem('isSidebarPinned') || 'false');
+    }
+    return false;
   });
 
   const [isSidebarOpen, setSidebarOpen] = useState<boolean>(() => {
-    return JSON.parse(localStorage.getItem('isSidebarOpen') || 'false') || false;
+    if (isBrowser) {
+      return JSON.parse(localStorage.getItem('isSidebarOpen') || 'false');
+    }
+    return false;
   });
 
   const toggleSidebar = () => {
     setSidebarOpen((prevState) => {
       const newState = !prevState;
-      localStorage.setItem('isSidebarOpen', JSON.stringify(newState));
+      if (isBrowser) localStorage.setItem('isSidebarOpen', JSON.stringify(newState));
       return newState;
     });
   };
@@ -22,17 +31,18 @@ const useSidebar = () => {
   const toggleSidebarPin = () => {
     setSidebarPinned((prevState) => {
       const newState = !prevState;
-      localStorage.setItem('isSidebarPinned', JSON.stringify(newState));
+      if (isBrowser) localStorage.setItem('isSidebarPinned', JSON.stringify(newState));
       return newState;
     });
   };
 
   useEffect(() => {
-    localStorage.setItem('isSidebarOpen', JSON.stringify(isSidebarOpen));
-    localStorage.setItem('isSidebarPinned', JSON.stringify(isSidebarPinned));
-  }, [isSidebarOpen, isSidebarPinned]);
+    if (isBrowser) {
+      localStorage.setItem('isSidebarOpen', JSON.stringify(isSidebarOpen));
+      localStorage.setItem('isSidebarPinned', JSON.stringify(isSidebarPinned));
+    }
+  }, [isSidebarOpen, isSidebarPinned, isBrowser]);
 
-  // Defining the return type of the hook
   return {
     isSidebarOpen,
     isSidebarPinned,

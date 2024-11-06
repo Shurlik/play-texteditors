@@ -1,5 +1,6 @@
-"use client"
+"use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React, { useState } from "react";
 
 import { Box, List, ListItem, Typography, Collapse } from "@mui/material";
@@ -9,17 +10,10 @@ import { getColor } from "@/utils/getColor";
 import { ArticlesIcon } from "../common/Icons";
 import { contentItems } from "../navigation/NavigationList";
 
-interface ContentItem {
-  name: string;
-  link: string;
-  disabled?: boolean;
-  icon: React.ReactNode;
-}
-
-interface ContentMarketingSectionProps {
+type ContentMarketingSectionProps = {
   toggleSidebar: () => void;
   isPinned: boolean;
-}
+};
 
 const colors = {
   black: getColor("black"),
@@ -33,11 +27,14 @@ const colors = {
 export const ContentMarketingSection: React.FC<
   ContentMarketingSectionProps
 > = ({ toggleSidebar, isPinned }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [isOpen, setIsOpen] = useState(true);
+  const pathname = usePathname;
 
   const handleToggle = () => {
     setIsOpen((prevOpen) => !prevOpen);
   };
+
+  const isActive = (path: string) => pathname === path;
 
   return (
     <List sx={{ padding: 0, width: "100%" }}>
@@ -85,21 +82,36 @@ export const ContentMarketingSection: React.FC<
             borderRadius: "4px",
           }}
         >
-          {contentItems.map((item: ContentItem) => {
+          {contentItems.map((item) => {
             const isDisabled = item.disabled;
+            const isLinkActive = isActive(item.link || "");
 
             return (
               <Link
+                onClick={!isPinned ? toggleSidebar : undefined}
                 key={item.name}
-                href={item.link}
-                passHref // Use passHref to ensure the child component receives the link correctly
+                href={item.link || "#"}
+                passHref
+                style={{
+                  textDecoration: "none",
+                  pointerEvents: isDisabled ? "none" : "auto",
+                  display: "flex",
+                  alignItems: "center",
+                  color: "inherit",
+                  width: "100%",
+                }}
               >
                 <ListItem
-                  onClick={!isPinned ? toggleSidebar : undefined}
                   sx={{
                     borderRadius: "4px",
-                    backgroundColor: "transparent", 
-                    color: "inherit", 
+                    backgroundColor: isLinkActive
+                      ? colors.greyhover
+                      : "transparent",
+                    color: isLinkActive
+                      ? colors.orange
+                      : isDisabled
+                      ? colors.grey
+                      : "inherit",
                     "&:hover": {
                       backgroundColor: isDisabled
                         ? "transparent"
@@ -110,7 +122,6 @@ export const ContentMarketingSection: React.FC<
                     padding: "8px 12px",
                     display: "flex",
                     alignItems: "center",
-                    pointerEvents: isDisabled ? "none" : "auto",
                   }}
                 >
                   <Box

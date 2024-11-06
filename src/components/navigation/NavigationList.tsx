@@ -6,7 +6,6 @@ import {
   SubjectOutlined,
   TrackChanges,
   PostAdd,
-  ManageAccounts,
 } from "@mui/icons-material";
 import {
   AIIcon,
@@ -36,6 +35,9 @@ import {
 } from "@/components/common/Icons";
 import React from "react";
 
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+
 export interface MenuItem {
   name: string;
   link?: string;
@@ -45,50 +47,25 @@ export interface MenuItem {
   
 }
 
-export const brandItems: MenuItem[] = [
-  {
-    name: "Persona",
-    icon: <PersonOutlined style={{ fontSize: "16px" }} />,
-    subItems: [
-      {
-        name: "Create Persona",
-        link: "/create",
-        icon: <PersonOutlined style={{ fontSize: "15px" }} />,
-        disabled: false,
-      },
-      {
-        name: "1 Click Generation",
-        link: "/",
-        icon: <AdsClick style={{ fontSize: "15px" }} />,
-        disabled: true,
-      },
-      { name: "Analyzer", link: "/", icon: <StepsIcon />, disabled: true },
-      {
-        name: "Management",
-        link: "/management",
-        icon: <ManageAccounts style={{ fontSize: "15px" }} />,
-        disabled: false,
-      },
-    ],
-  },
-  {
-    name: "Brand",
-    icon: <BrandIcon />,
-    subItems: [
-      {
-        name: "Guidelines",
-        link: "/",
-        icon: <SubjectOutlined style={{ fontSize: "15px" }} />,
-        disabled: true,
-      },
-      {
-        name: "Analyzer",
-        link: "/",
-        icon: <AutoGraph style={{ fontSize: "15px" }} />,
-        disabled: true,
-      },
-    ],
-  },
+export const brandItems = [
+	{
+		name: 'Persona',
+		icon: <PersonOutlined style={{fontSize: '16px'}}/>,
+		subItems: [
+			{name: 'Create Persona', link: '/create', icon: <PersonAddIcon style={{fontSize: '15px'}}/>, disabled: false},
+			{name: '1 Click Generation', link: '/', icon: <AdsClick style={{fontSize: '15px'}}/>, disabled: true},
+			{name: 'Analyzer', link: '/', icon: <StepsIcon/>, disabled: true},
+			{name: 'Management', link: '/management', icon: <ManageAccountsIcon sx={{fontSize: '15px'}}/>, disabled: false},
+		],
+	},
+	{
+		name: 'Brand',
+		icon: <BrandIcon/>,
+		subItems: [
+			{name: 'Guidelines', link: '/', icon: <SubjectOutlined style={{fontSize: '15px'}}/>, disabled: true},
+			{name: 'Analyzer', link: '/', icon: <AutoGraph style={{fontSize: '15px'}}/>, disabled: true},
+		],
+	},
 ];
 
 // Content menu items

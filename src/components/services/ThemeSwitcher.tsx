@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState, FC } from "react";
 
 import { IconButton } from "@mui/material";
@@ -5,10 +6,17 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 
 const ThemeSwitcher: FC = () => {
-  const [theme, setTheme] = useState<string>(() => {
+  const [theme, setTheme] = useState<string>("dark");
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+
     const savedTheme = localStorage.getItem("theme");
-    return savedTheme ? savedTheme : "dark";
-  });
+    if (savedTheme) {
+      setTheme(savedTheme);
+    }
+  }, []);
 
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
@@ -17,8 +25,12 @@ const ThemeSwitcher: FC = () => {
   };
 
   useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-  }, [theme]);
+    if (isMounted) {
+      document.documentElement.setAttribute("data-theme", theme);
+    }
+  }, [theme, isMounted]);
+
+  if (!isMounted) return null;
 
   return (
     <IconButton
