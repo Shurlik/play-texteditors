@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState, MouseEvent } from "react";
@@ -24,7 +25,7 @@ const colors = {
 };
 
 const UserMenuItem: React.FC<UserMenuItemProps> = ({ onLogout }) => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const open = Boolean(anchorEl);
   const router = useRouter();
@@ -36,7 +37,11 @@ const UserMenuItem: React.FC<UserMenuItemProps> = ({ onLogout }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+  const avatarSrc = user?.image
+    ? user.image
+    : user?.Gender === "Female"
+    ? officeGirl.src
+    : officeBoy.src;
   return (
     <Box
       sx={{
@@ -60,19 +65,15 @@ const UserMenuItem: React.FC<UserMenuItemProps> = ({ onLogout }) => {
           alignItems: "center",
         }}
       >
-        <Image
-        width={"24"}
-        height={"24"}
-          style={{ width: "100%", height: "100%", objectFit: "cover" }}
-          alt="user avatar"
-          src={
-            user?.image
-              ? user.image
-              : user?.Gender === "Female"
-              ? officeGirl.src
-              : officeBoy.src
-          }
-        />
+        {user && !loading && (
+          <Image
+            width={"24"}
+            height={"24"}
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            alt="user avatar"
+            src={avatarSrc || ""}
+          />
+        )}
       </Box>
       <Box
         onClick={handleClick}

@@ -122,6 +122,8 @@ body {
   transition:
     background-color 0.8s,
     color 0.8s;
+  max-height: 120vh;
+  overflow: hidden;
 }
 
 
