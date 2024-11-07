@@ -1,9 +1,14 @@
+import {
+  DataGrid,
+  GridActionsCellItem,
+  GridColDef,
+  GridRowSelectionModel,
+} from "@mui/x-data-grid";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 import { Box } from "@mui/material";
-import { DataGrid, GridActionsCellItem, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
 import { paginationModel } from "@/utils/helpers";
 import { getColor } from "@/utils/getColor";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
@@ -15,6 +20,7 @@ import DropMenu from "./DropMenu";
 const colors = {
   red: getColor("red"),
   orange: getColor("orange"),
+  white: getColor("white"),
 };
 
 // Define the User type
@@ -106,7 +112,7 @@ const UsersList: React.FC<UsersListProps> = ({
   ];
 
   const rows = users.map((u) => ({
-    id: String(u.id),  // Convert ID to string
+    id: String(u.id), 
     username: u.username,
     name: u.name,
     email: u.email,
@@ -115,7 +121,7 @@ const UsersList: React.FC<UsersListProps> = ({
   }));
 
   const handleSelectionChange = (data: GridRowSelectionModel) => {
-    setUsersToDelete([...data] as string[]); // Spread into a new array to remove readonly constraint
+    setUsersToDelete([...data] as string[]);
   };
 
   return (
@@ -134,9 +140,26 @@ const UsersList: React.FC<UsersListProps> = ({
         onRowSelectionModelChange={(newSelection) => {
           handleSelectionChange(newSelection);
         }}
+        sx={{
+          "& .MuiDataGrid-row": {
+            color: colors.white,
+          },
+          "& .MuiPaginationItem-root": {
+            color: colors.white,
+          },
+          "& .MuiTablePagination-toolbar": {
+            color: colors.white,
+          },
+          "& .MuiSvgIcon-root": {
+            fill: colors.white,
+          },
+          "& .MuiToolbar-root > *": {
+            marginBottom: 0,
+          },
+        }}
       />
       <DropMenu
-        disabled={disabled}  
+        disabled={disabled}
         onClose={handleClose}
         open={open}
         data={MENU_DATA}
