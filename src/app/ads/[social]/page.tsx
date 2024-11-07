@@ -114,6 +114,7 @@ const CreateAdsPage: React.FC = () => {
             selectedValues={selectedValues}
             setSelectedValues={setSelectedValues}
             setSteps={setSteps}
+            
             steps={steps}
             formData={formData}
           />

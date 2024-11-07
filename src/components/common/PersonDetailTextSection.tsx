@@ -115,6 +115,7 @@ const PersonDetailTextSection: React.FC<PersonDetailTextSectionProps> = ({
                 />
               ) : fieldType === "select" ? (
                 <Select
+                className="select"
                   sx={{
                     marginTop: "0.5rem",
                     width: "50%",

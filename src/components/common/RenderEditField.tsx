@@ -55,6 +55,7 @@ const RenderEditField: React.FC<RenderEditFieldProps> = ({
                         >
                             <InputLabel>{field}</InputLabel>
                             <Select
+                            className="select"
                                 disabled={loading}
                                 value={value}
                                 onChange={(e) => handleFieldChange(field, e.target.value)}

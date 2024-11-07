@@ -138,7 +138,7 @@ const ShortsForm: React.FC<ShortsFormProps> = ({ loading, setFormData, createSho
                 name="article"
                 control={control}
                 render={({ field }) => (
-                  <Select disabled={loading} {...field} error={!!errors.article}>
+                  <Select  disabled={loading} {...field} error={!!errors.article}>
                     <MenuItem value="">
                       <em>None</em>
                     </MenuItem>

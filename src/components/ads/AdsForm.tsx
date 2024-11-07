@@ -140,7 +140,12 @@ const AdsForm: React.FC<AdsFormProps> = ({
             name="model"
             control={control}
             render={({ field }) => (
-              <Select disabled={loading} {...field} error={!!errors.model}>
+              <Select
+                className="select"
+                disabled={loading}
+                {...field}
+                error={!!errors.model}
+              >
                 <MenuItem value={"gpt"}>Chat GPT</MenuItem>
                 <MenuItem value={"claude"}>Claude</MenuItem>
               </Select>
@@ -170,7 +175,11 @@ const AdsForm: React.FC<AdsFormProps> = ({
                 name="ad"
                 control={control}
                 render={({ field }) => (
-                  <Select disabled={loading || !!ad} {...field}>
+                  <Select
+                    className="select"
+                    disabled={loading || !!ad}
+                    {...field}
+                  >
                     <MenuItem value={``}>
                       <em>None</em>
                     </MenuItem>

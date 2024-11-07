@@ -5,6 +5,7 @@ const colors = {
   orange50: getColor("orange50"),
   white: getColor("white"),
   mainGreen: getColor("mainGreen"),
+  greenBtn: getColor("greenBtn"),
   black: getColor("black"),
   silverLight: getColor("silverLight"),
   silver: getColor("silver"),
@@ -29,8 +30,11 @@ const styleObj = {
       padding: ".6rem 1.5rem",
       fontSize: "1rem",
       fontWeight: "bold",
+      boxShadow: "none",
       "&:hover": {
         backgroundColor: colors.mainGreen,
+        border:"none",
+        boxShadow: "none",
         color: colors.black, // Color with hover effect
       },
     },
@@ -41,7 +45,8 @@ const styleObj = {
       fontSize: "1rem",
       fontWeight: "bold",
       "&:hover": {
-        backgroundColor: colors.silverLight,
+        backgroundColor: colors.mainGreen,
+        borderColor: colors.mainGreen,
         color: colors.black,
         border: `1px solid ${colors.silver}`,
       },
@@ -50,9 +55,9 @@ const styleObj = {
       borderColor: colors.orange, // Border color
       color: colors.orange,
       "&:hover": {
-        backgroundColor: colors.orange,
-        color: colors.white,
-        border: `1px solid ${colors.orange}`,
+        backgroundColor: colors.mainGreen,
+        color: colors.black,
+        border: `1px solid ${colors.mainGreen}`,
       },
       "&:disabled": {
         color: colors.orange50,
@@ -68,8 +73,9 @@ const styleObj = {
       fontWeight: "bold",
       transition: ".3s",
       "&:hover": {
-        backgroundColor: colors.orange,
-        color: colors.white,
+        backgroundColor: colors.mainGreen,
+        borderColor: colors.mainGreen,
+        color: colors.black,
         // border: `1px solid ${colors.silver}`,
       },
     },

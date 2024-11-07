@@ -1,31 +1,38 @@
 import { getColor } from "@/utils/getColor";
 
 const colors = {
+  black: getColor("black"),
   white: getColor("white"),
   whiteGrey: getColor("whiteGrey"),
   darkGrey42: getColor("darkGrey42"),
   orange50: getColor("orange50"),
   darkGrayMain: getColor("darkGrayMain"),
   background: getColor("background"),
+  backgroundMain: getColor("backgroundMain"),
   blackPermanet: getColor("blackPermanent"),
   grey: getColor("grey"),
   orange: getColor("orange"),
 };
 
 export const inputOutlinedStyles = {
+  
   styleOverrides: {
     root: {
-      backgroundColor: colors.whiteGrey,
+      backgroundColor: "#FFF",
+
       padding: "16px",
       borderRadius: "8px",
+      // "& .MuiSelect-select": {
+      //   background: colors.orange,
+      // },
       "& .MuiOutlinedInput-notchedOutline": {
-        borderColor: colors.darkGrey42,
+        borderColor: colors.orange50,
       },
       "&:hover .MuiOutlinedInput-notchedOutline": {
-        borderColor: colors.orange50,
+        borderColor: colors.orange,
       },
       "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-        borderColor: colors.orange50,
+        borderColor: colors.orange,
       },
       "& .MuiInputBase-input::placeholder": {
         color: colors.darkGrayMain, // Change color to dark

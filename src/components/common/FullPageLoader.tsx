@@ -18,7 +18,8 @@ const FullPageLoader: React.FC<FullPageLoaderProps> = ({ position }) => {
         bottom: 0,
         left: 0,
         right: 0,
-        backgroundColor: getColor("black20"),
+        backgroundColor: getColor("black"),
+        opacity: 0.5,
         flexDirection: "column",
         zIndex: 99999,
       }}

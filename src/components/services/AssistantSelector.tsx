@@ -30,6 +30,7 @@ const AssistantSelector: React.FC<AssistantSelectorProps> = ({
         }}
       >
         <Select
+        className="select"
           value={value}
           label="Assistant"
           onChange={onChange}

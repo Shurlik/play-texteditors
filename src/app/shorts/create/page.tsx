@@ -90,6 +90,7 @@ const CreateShortsPage: React.FC = () => {
             value={person}
             onChange={handleChange}
             label="Person"
+            className="select"
           >
             <MenuItem value="">
               <em>None</em>

@@ -39,6 +39,7 @@ export const colorsStorage = {
   green: "#06e447",
   green227: "var(--green227)",
   green2E_20: "#2ec77b33",
+  greenBtn: "#4CAF50",
 
   // Red Variants
   red: "#ff2d58",

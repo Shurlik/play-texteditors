@@ -38,11 +38,15 @@ const UserMenuItem: React.FC<UserMenuItemProps> = ({ onLogout }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   const avatarSrc = user?.image
     ? user.image
     : user?.Gender === "Female"
     ? officeGirl.src
-    : officeBoy.src;
+    : user?.Gender === "Male"
+    ? officeBoy.src
+    : null;
+
   return (
     <Box
       sx={{
@@ -66,13 +70,13 @@ const UserMenuItem: React.FC<UserMenuItemProps> = ({ onLogout }) => {
           alignItems: "center",
         }}
       >
-        {user && !loading && avatarSrc &&  (
+        {user && !loading && avatarSrc && (
           <Image
-            width={"24"}
-            height={"24"}
+            width={24}
+            height={24}
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
             alt="user avatar"
-            src={avatarSrc || noLogo.src}
+            src={avatarSrc}
           />
         )}
       </Box>
