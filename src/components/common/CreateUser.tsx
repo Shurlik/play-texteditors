@@ -1,5 +1,6 @@
-import React, { useRef, useState, ChangeEvent } from "react";
-import { Controller, useForm, SubmitHandler } from "react-hook-form";
+"use client";
+import React, { useRef, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import * as yup from "yup";
 
@@ -9,19 +10,23 @@ import { uploadProfileFile } from "@/api/services/airtableService";
 import { getColor } from "@/utils/getColor";
 import authService from "@/api/services/authService";
 import ImageSearchIcon from "@mui/icons-material/ImageSearch";
+import noLogo from "@/assets/images/no-logo.png";
 
-import noLogo from "../../assets/images/no-logo.png";
 import Loader from "./Loader";
 
-const colors = {
-  orange: getColor("orange"),
-  black20: getColor("black20"),
-  mainGreen: getColor("mainGreen"),
-  mainGreen50: getColor("mainGreen50"),
-  gray2: getColor("gray2"),
-};
+interface CreateUserProps {
+  onClose: () => void;
+  callback: () => Promise<void>;
+}
 
-// Schema validation
+interface FormData {
+  username: string;
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
 const schema = yup
   .object({
     username: yup
@@ -44,18 +49,13 @@ const schema = yup
   })
   .required();
 
-type FormValues = {
-  username: string;
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
+const colors = {
+  orange: getColor("orange"),
+  black20: getColor("black20"),
+  gray2: getColor("gray2"),
+  mainGreen: getColor("mainGreen"),
+  mainGreen50: getColor("mainGreen50"),
 };
-
-interface CreateUserProps {
-  onClose: () => void;
-  callback: () => Promise<void>;
-}
 
 const CreateUser: React.FC<CreateUserProps> = ({ onClose, callback }) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -68,7 +68,7 @@ const CreateUser: React.FC<CreateUserProps> = ({ onClose, callback }) => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<FormValues>({
+  } = useForm<FormData>({
     defaultValues: {
       name: "",
       email: "",
@@ -81,24 +81,21 @@ const CreateUser: React.FC<CreateUserProps> = ({ onClose, callback }) => {
   });
 
   const handleImageClick = () => {
-    if (!loading && fileInputRef.current) {
-      fileInputRef.current.click();
-    }
+    if (loading) return;
+    fileInputRef.current?.click();
   };
 
-  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setFile(file);
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files?.[0];
+    if (selectedFile) {
+      setFile(selectedFile);
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewUrl(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      reader.onloadend = () => setPreviewUrl(reader.result as string);
+      reader.readAsDataURL(selectedFile);
     }
   };
 
-  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+  const onSubmit = async (data: FormData) => {
     setLoading(true);
     try {
       const { username, password, email, name } = data;
@@ -118,7 +115,7 @@ const CreateUser: React.FC<CreateUserProps> = ({ onClose, callback }) => {
       onClose();
       toast.success("User created");
     } catch (e) {
-      console.error("User create error: ", e);
+      console.error("User create error:", e);
       toast.error("User create error");
     } finally {
       setLoading(false);
@@ -147,8 +144,12 @@ const CreateUser: React.FC<CreateUserProps> = ({ onClose, callback }) => {
         <Box
           component="img"
           alt="user image"
-          src={previewUrl || noLogo}
-          sx={{ width: "100%", height: "100%", objectFit: "cover" }}
+          src={previewUrl || noLogo.src}
+          sx={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+          }}
         />
         <Box
           onClick={handleImageClick}
@@ -164,10 +165,17 @@ const CreateUser: React.FC<CreateUserProps> = ({ onClose, callback }) => {
             justifyContent: "center",
             transition: ".3s",
             cursor: "pointer",
-            "&:hover": { backgroundColor: colors.mainGreen50 },
+            "&:hover": {
+              backgroundColor: colors.mainGreen50,
+            },
           }}
         >
-          <ImageSearchIcon sx={{ color: colors.orange, fontSize: "2rem" }} />
+          <ImageSearchIcon
+            sx={{
+              color: colors.orange,
+              fontSize: "2rem",
+            }}
+          />
         </Box>
       </Box>
       <Typography
@@ -182,12 +190,92 @@ const CreateUser: React.FC<CreateUserProps> = ({ onClose, callback }) => {
         render={({ field }) => (
           <TextField
             disabled={loading}
-            fullWidth
-            margin="normal"
+            sx={{ width: "100%", marginBottom: 2 }}
             {...field}
             variant="outlined"
             error={!!errors.username}
             helperText={errors.username?.message}
+          />
+        )}
+      />
+      <Typography
+        variant="h6"
+        sx={{ marginBottom: ".5rem", marginTop: "1rem" }}
+      >
+        Name
+      </Typography>
+      <Controller
+        name="name"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            disabled={loading}
+            sx={{ width: "100%", marginBottom: 2 }}
+            {...field}
+            variant="outlined"
+            error={!!errors.name}
+            helperText={errors.name?.message}
+          />
+        )}
+      />
+      <Typography
+        variant="h6"
+        sx={{ marginBottom: ".5rem", marginTop: "1rem" }}
+      >
+        Email
+      </Typography>
+      <Controller
+        name="email"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            sx={{ width: "100%", marginBottom: 2 }}
+            {...field}
+            variant="outlined"
+            error={!!errors.email}
+            helperText={errors.email?.message}
+          />
+        )}
+      />
+      <Typography
+        variant="h6"
+        sx={{ marginBottom: ".5rem", marginTop: "1rem" }}
+      >
+        Password
+      </Typography>
+      <Controller
+        name="password"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            disabled={loading}
+            sx={{ width: "100%", marginBottom: 2 }}
+            {...field}
+            variant="outlined"
+            type="password"
+            error={!!errors.password}
+            helperText={errors.password?.message}
+          />
+        )}
+      />
+      <Typography
+        variant="h6"
+        sx={{ marginBottom: ".5rem", marginTop: "1rem" }}
+      >
+        Confirm password
+      </Typography>
+      <Controller
+        name="confirmPassword"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            disabled={loading}
+            sx={{ width: "100%", marginBottom: 2 }}
+            {...field}
+            variant="outlined"
+            type="password"
+            error={!!errors.confirmPassword}
+            helperText={errors.confirmPassword?.message}
           />
         )}
       />
@@ -203,7 +291,7 @@ const CreateUser: React.FC<CreateUserProps> = ({ onClose, callback }) => {
         <Button
           disabled={loading}
           type="submit"
-          fullWidth
+          sx={{ width: "100%" }}
           variant="contained"
           color="primary"
         >
@@ -212,7 +300,7 @@ const CreateUser: React.FC<CreateUserProps> = ({ onClose, callback }) => {
         <Button
           disabled={loading}
           onClick={cancelHandler}
-          fullWidth
+          sx={{ width: "100%" }}
           variant="outlined"
           color="primary"
         >

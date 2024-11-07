@@ -9,10 +9,11 @@ import { useAuth } from "@/contexts/AuthContext";
 import FormatColorTextIcon from "@mui/icons-material/FormatColorText";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import noLogo from "@/assets/images/no-logo.png";
+import officeBoy from "@/assets/images/cartoon-office-boy.png";
+import officeGirl from "@/assets/images/cartoon-office-girl.png";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 
-import officeBoy from "../../assets/images/cartoon-office-boy.png";
-import officeGirl from "../../assets/images/cartoon-office-girl.png";
 import DropMenu from "./DropMenu";
 
 interface UserMenuItemProps {
@@ -65,13 +66,13 @@ const UserMenuItem: React.FC<UserMenuItemProps> = ({ onLogout }) => {
           alignItems: "center",
         }}
       >
-        {user && !loading && (
+        {user && !loading && avatarSrc &&  (
           <Image
             width={"24"}
             height={"24"}
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
             alt="user avatar"
-            src={avatarSrc || ""}
+            src={avatarSrc || noLogo.src}
           />
         )}
       </Box>
