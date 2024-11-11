@@ -31,9 +31,8 @@ const colors = {
 };
 
 const Persons: React.FC = () => {
-  const {data = [], isLoading} = useSWR<Person[]>("/persons", () =>
-    getAllRecords()
-  );
+  // @ts-ignore
+  const {data = [], isLoading} = useSWR<Person[]>("/persons", getAllRecords);
   const [selectedPersons, setSelectedPersons] = useState<{
     [key: string]: boolean;
   }>({});
