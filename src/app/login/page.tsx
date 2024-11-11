@@ -63,16 +63,6 @@ const LoginPage: React.FC = () => {
         }
       )
       .fromTo(
-        titleRef.current,
-        { opacity: 0 },
-        {
-          opacity: 1,
-          duration: 1,
-          ease: "power2.in",
-        },
-        ">-1"
-      )
-      .fromTo(
         "#texttest",
         {},
         {

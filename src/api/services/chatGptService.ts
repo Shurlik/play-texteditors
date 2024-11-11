@@ -141,7 +141,6 @@ export async function askGptStream(
       if (value) {
         const chunk = decoder.decode(value, { stream: true });
         accumulatedText += chunk;
-        console.log(accumulatedText);
         // Плавная задержка перед обновлением UI
         if (onData && typeof onData === "function") {
           await smoothOutput(chunk, onData);

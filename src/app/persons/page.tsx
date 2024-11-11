@@ -1,26 +1,20 @@
 "use client";
-import {
-  Box,
-  Button,
-  IconButton,
-  Snackbar,
-  TextField,
-  Typography,
-} from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
-import { toast } from "react-toastify";
+import {Box, Button, IconButton, Snackbar, TextField, Typography,} from "@mui/material";
+import React, {useEffect, useRef, useState} from "react";
+import {toast} from "react-toastify";
 import useSWR from "swr";
 
-import { askClaude, askClaudeStream } from "@/api/services/claudeService";
-import { askGptStream, askGpt } from "@/api/services/chatGptService";
-import { getAllRecords } from "@/api/services/airtableService";
-import { getColor } from "@/utils/getColor";
+import {askClaudeStream} from "@/api/services/claudeService";
+import {askGptStream} from "@/api/services/chatGptService";
+import {getAllRecords} from "@/api/services/airtableService";
+import {getColor} from "@/utils/getColor";
 import AssistantSelector from "@/components/services/AssistantSelector";
 import authService from "@/api/services/authService";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import FormattedTextDisplay from "@/components/services/FormattedTextDisplay";
 import Loader from "@/components/common/Loader";
 import PersonCard from "@/components/common/PersonCard";
+import Editor from "@/components/tests/TestEditor";
 
 interface Person {
   id: string;
@@ -37,7 +31,7 @@ const colors = {
 };
 
 const Persons: React.FC = () => {
-  const { data = [], isLoading } = useSWR<Person[]>("/persons", () =>
+  const {data = [], isLoading} = useSWR<Person[]>("/persons", () =>
     getAllRecords()
   );
   const [selectedPersons, setSelectedPersons] = useState<{
@@ -55,7 +49,7 @@ const Persons: React.FC = () => {
   };
 
   const handleSelectChange = (personId: string, isSelected: boolean) => {
-    setSelectedPersons((prev) => ({ ...prev, [personId]: isSelected }));
+    setSelectedPersons((prev) => ({...prev, [personId]: isSelected}));
   };
 
   const handleRequestChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -136,7 +130,7 @@ const Persons: React.FC = () => {
   }, [resultText]);
 
   if (isLoading) {
-    return <Loader />;
+    return <Loader/>;
   }
 
   return (
@@ -149,7 +143,7 @@ const Persons: React.FC = () => {
       }}
     >
       {isLoading ? (
-        <Loader />
+        <Loader/>
       ) : (
         <Box
           sx={{
@@ -170,7 +164,7 @@ const Persons: React.FC = () => {
           ))}
         </Box>
       )}
-      <Box sx={{ mt: 5, mb: 4, paddingX: "2rem", position: "relative" }}>
+      <Box sx={{mt: 5, mb: 4, paddingX: "2rem", position: "relative"}}>
         <Box
           sx={{
             display: "flex",
@@ -190,7 +184,10 @@ const Persons: React.FC = () => {
           >
             Enter your request
           </Typography>
-          <AssistantSelector value={assistant} onChange={handleChange} />
+          <AssistantSelector
+            value={assistant}
+            onChange={handleChange}
+          />
         </Box>
         <TextField
           fullWidth
@@ -201,7 +198,7 @@ const Persons: React.FC = () => {
           variant="outlined"
         />
         <Button
-          sx={{ marginTop: "1rem" }}
+          sx={{marginTop: "1rem"}}
           variant="outlined"
           onClick={streamAnswer}
           color="secondary"
@@ -230,7 +227,8 @@ const Persons: React.FC = () => {
               position: "relative",
             }}
           >
-            <FormattedTextDisplay>{resultText}</FormattedTextDisplay>
+            {loading && !!resultText && <FormattedTextDisplay>{resultText}</FormattedTextDisplay>}
+            {!loading && !!resultText && <Editor content={resultText}/>}
           </Box>
         )}
         {resultText && (
@@ -246,7 +244,7 @@ const Persons: React.FC = () => {
               cursor: "pointer",
             }}
           >
-            <Typography sx={{ display: "inline", color: "inherit" }}>
+            <Typography sx={{display: "inline", color: "inherit"}}>
               Copy result:
             </Typography>
             <IconButton
@@ -255,7 +253,7 @@ const Persons: React.FC = () => {
                 color: "inherit",
               }}
             >
-              <ContentCopyIcon />
+              <ContentCopyIcon/>
             </IconButton>
           </Box>
         )}

@@ -38,7 +38,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-       
+
           <DateLocalizationProvider>
             <Version />
             <AuthProvider>
@@ -48,11 +48,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                  <AuthLayout>
                 <MainLayout>{children}</MainLayout>
                 </AuthLayout>
-                <ToastContainer position="top-left" autoClose={1500} />
+                <ToastContainer position="top-left" autoClose={2000} />
               </Box>
             </AuthProvider>
           </DateLocalizationProvider>
-        
+
       </body>
     </html>
   );
